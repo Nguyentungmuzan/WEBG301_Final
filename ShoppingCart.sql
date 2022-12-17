@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 17, 2022 lúc 07:07 AM
--- Phiên bản máy phục vụ: 10.4.25-MariaDB
--- Phiên bản PHP: 8.1.10
+-- Thời gian đã tạo: Th12 17, 2022 lúc 10:54 AM
+-- Phiên bản máy phục vụ: 10.4.24-MariaDB
+-- Phiên bản PHP: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `shoppingcart`
 --
-CREATE DATABASE IF NOT EXISTS `ShoppingCart` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `ShoppingCart`;
+
 -- --------------------------------------------------------
 
 --
@@ -63,7 +62,12 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20221213051336', '2022-12-13 06:13:45', 52),
 ('DoctrineMigrations\\Version20221213051424', '2022-12-13 06:14:32', 48),
 ('DoctrineMigrations\\Version20221213051556', '2022-12-13 06:16:05', 154),
-('DoctrineMigrations\\Version20221217060510', '2022-12-17 07:05:21', 42);
+('DoctrineMigrations\\Version20221217060510', '2022-12-17 07:12:37', 983),
+('DoctrineMigrations\\Version20221217094804', '2022-12-17 10:48:10', 41),
+('DoctrineMigrations\\Version20221217094858', '2022-12-17 10:49:07', 50),
+('DoctrineMigrations\\Version20221217095006', '2022-12-17 10:50:12', 30),
+('DoctrineMigrations\\Version20221217095115', '2022-12-17 10:51:20', 63),
+('DoctrineMigrations\\Version20221217095213', '2022-12-17 10:52:19', 51);
 
 -- --------------------------------------------------------
 
@@ -79,6 +83,32 @@ CREATE TABLE `messenger_messages` (
   `created_at` datetime NOT NULL,
   `available_at` datetime NOT NULL,
   `delivered_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `order`
+--
+
+CREATE TABLE `order` (
+  `id` int(11) NOT NULL,
+  `total` double NOT NULL,
+  `purchase_date` date NOT NULL,
+  `user_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `order_detail`
+--
+
+CREATE TABLE `order_detail` (
+  `id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `orders_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -174,6 +204,21 @@ ALTER TABLE `messenger_messages`
   ADD KEY `IDX_75EA56E016BA31DB` (`delivered_at`);
 
 --
+-- Chỉ mục cho bảng `order`
+--
+ALTER TABLE `order`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_F5299398A76ED395` (`user_id`);
+
+--
+-- Chỉ mục cho bảng `order_detail`
+--
+ALTER TABLE `order_detail`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_ED896F464584665A` (`product_id`),
+  ADD KEY `IDX_ED896F46CFFE9AD6` (`orders_id`);
+
+--
 -- Chỉ mục cho bảng `product`
 --
 ALTER TABLE `product`
@@ -204,6 +249,18 @@ ALTER TABLE `messenger_messages`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT cho bảng `order`
+--
+ALTER TABLE `order`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `order_detail`
+--
+ALTER TABLE `order_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT cho bảng `product`
 --
 ALTER TABLE `product`
@@ -218,6 +275,19 @@ ALTER TABLE `user`
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
+
+--
+-- Các ràng buộc cho bảng `order`
+--
+ALTER TABLE `order`
+  ADD CONSTRAINT `FK_F5299398A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Các ràng buộc cho bảng `order_detail`
+--
+ALTER TABLE `order_detail`
+  ADD CONSTRAINT `FK_ED896F464584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `FK_ED896F46CFFE9AD6` FOREIGN KEY (`orders_id`) REFERENCES `order` (`id`);
 
 --
 -- Các ràng buộc cho bảng `product`
