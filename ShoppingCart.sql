@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 15, 2022 lúc 02:18 AM
+-- Thời gian đã tạo: Th12 17, 2022 lúc 07:07 AM
 -- Phiên bản máy phục vụ: 10.4.25-MariaDB
 -- Phiên bản PHP: 8.1.10
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `ShoppingCart`
+-- Cơ sở dữ liệu: `shoppingcart`
 --
 CREATE DATABASE IF NOT EXISTS `ShoppingCart` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `ShoppingCart`;
@@ -62,7 +62,8 @@ CREATE TABLE `doctrine_migration_versions` (
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20221213051336', '2022-12-13 06:13:45', 52),
 ('DoctrineMigrations\\Version20221213051424', '2022-12-13 06:14:32', 48),
-('DoctrineMigrations\\Version20221213051556', '2022-12-13 06:16:05', 154);
+('DoctrineMigrations\\Version20221213051556', '2022-12-13 06:16:05', 154),
+('DoctrineMigrations\\Version20221217060510', '2022-12-17 07:05:21', 42);
 
 -- --------------------------------------------------------
 
@@ -134,6 +135,19 @@ INSERT INTO `product` (`id`, `name`, `price`, `imgurl`, `description`, `category
 (65, 'Xiaomi 12T', 423, '65.png', 'Display technology:: AMOLED DotDisplay Resolution:: 2712 x 1220 Widescreen:: 6.67\" Resolution: 108MP x 8MP x 2MP, 20MP OS: MIUI 13, Android 12 Processor chip (CPU): Dimensity 8100-Ultra Internal Memory (ROM): 128GB RAM: 8GB Number of sim slots: 2 nano SIM', 3),
 (66, 'Xiaomi 12T Pro', 592, '66.png', 'Screen technology:: CrystalRes AMOLED Resolution:: Full HD+ Wide screen:: 6.67 inches Resolution: 200 MP x 8 MP x 2 MP., 20 MP Processor (CPU): Snapdragon 8+ Gen 1 Internal Memory (ROM): 256GB RAM: 12GB Battery capacity: 5,000 mAh', 3);
 
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `roles` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Chỉ mục cho các bảng đã đổ
 --
@@ -167,6 +181,13 @@ ALTER TABLE `product`
   ADD KEY `IDX_D34A04AD12469DE2` (`category_id`);
 
 --
+-- Chỉ mục cho bảng `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`);
+
+--
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
 
@@ -187,6 +208,12 @@ ALTER TABLE `messenger_messages`
 --
 ALTER TABLE `product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+
+--
+-- AUTO_INCREMENT cho bảng `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
