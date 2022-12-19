@@ -4,12 +4,14 @@
             <span class="fs-4">WEBG301 Team Van xinh xinh</span>
         </a>
         
-
         <ul class="nav nav-pills">
             <li class="nav-item"><a href="{{ path('product_index') }}" class="nav-link">Products</a></li>
             {% if app.user %}
                 <li class="nav-item"><a class="nav-link">Hello {{ app.user.email }}</a></li>
             {% endif %}
+            <li class="nav-item">
+            <a href="{{ path('crud_product_index') }}" class="nav-link">crud</a></li>
+            </li>
         </ul>
     </header>
 </div>
