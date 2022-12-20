@@ -27,9 +27,10 @@ use Doctrine\ORM\EntityManagerInterface;
 class ProductController extends AbstractController
 {
     #[Route('/', name: 'product_index')]
-    public function viewtestw(ProductRepository $productRepository)
+    public function viewtestw(ProductRepository $productRepository, Request $request)
     {
-        $products = $productRepository->findAll();
+        $searchValue = $request->get('searchValue') ? $request->get('searchValue') :'';
+        $products = $productRepository->searchProducts($searchValue);
         return $this->render('product/index.html.twig', 
         [
             'products' => $products
