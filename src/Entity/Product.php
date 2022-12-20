@@ -58,12 +58,12 @@ class Product
         return $this;
     }
 
-    public function getImgurl(): ?string
+    public function getImgurl()
     {
         return $this->imgurl;
     }
 
-    public function setImgurl(string $imgurl): self
+    public function setImgurl($imgurl)
     {
         $this->imgurl = $imgurl;
 
