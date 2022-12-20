@@ -4,15 +4,22 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\UserDetail;
+use App\Repository\UserDetailRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserDetailController extends AbstractController
 {
-    #[Route('/user/detail', name: 'app_user_detail')]
-    public function index(): Response
+
+    #[Route('/UserDetail/{id}', name: 'user_detail_index')]
+    public function index($id, UserDetailRepository $userRepository): Response
     {
-        return $this->render('user_detail/index.html.twig', [
-            'controller_name' => 'UserDetailController',
-        ]);
+        $userDetail = $userRepository->find($id);
+        return $this->render(
+            'user_detail/index.html.twig',
+            [
+                'user' => $userDetail
+            ]
+        );
     }
 }
