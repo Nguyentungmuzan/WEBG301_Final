@@ -21,9 +21,7 @@
 						<td>{{product.name}}</td>
 						<td>
 							{% if product.category != null %}
-								<a class="text-decoration-none" href="{{path('view_category', {'id': product.category.id})}}">
 									{{ product.category.name }}
-								</a>
 							{% endif %}
 						</td>
 						<td>{{ product.price }}</td>
