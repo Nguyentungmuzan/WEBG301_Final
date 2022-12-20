@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 17, 2022 lúc 10:54 AM
+-- Thời gian đã tạo: Th12 20, 2022 lúc 03:22 AM
 -- Phiên bản máy phục vụ: 10.4.24-MariaDB
 -- Phiên bản PHP: 8.1.6
 
@@ -20,8 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `shoppingcart`
 --
-CREATE DATABASE IF NOT EXISTS `ShoppingCart` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `ShoppingCart`;
+
 -- --------------------------------------------------------
 
 --
@@ -68,7 +67,9 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20221217094858', '2022-12-17 10:49:07', 50),
 ('DoctrineMigrations\\Version20221217095006', '2022-12-17 10:50:12', 30),
 ('DoctrineMigrations\\Version20221217095115', '2022-12-17 10:51:20', 63),
-('DoctrineMigrations\\Version20221217095213', '2022-12-17 10:52:19', 51);
+('DoctrineMigrations\\Version20221217095213', '2022-12-17 10:52:19', 51),
+('DoctrineMigrations\\Version20221219162820', '2022-12-19 17:28:26', 212),
+('DoctrineMigrations\\Version20221219165742', '2022-12-19 17:57:50', 33);
 
 -- --------------------------------------------------------
 
@@ -176,8 +177,38 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
   `roles` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_detail_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `roles`, `password`, `user_detail_id`) VALUES
+(1, 'van@gmail.com', '[]', '$2y$13$CXQs6uppH/D.7W18N8GBAOmrNDcJOR/oCr8BPS6ZwcQaLJQL5MAW2', 1),
+(2, 'v@gmail.com', '[]', '$2y$13$vOx1ASxxq5MVmQT/8mPA0OGfSI/WbtMbi6LBLFG3Y/.3KoTUk5vNW', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `user_detail`
+--
+
+CREATE TABLE `user_detail` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` int(11) NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `user_detail`
+--
+
+INSERT INTO `user_detail` (`id`, `name`, `phone`, `address`) VALUES
+(1, 'vanxinh', 987678999, 'KHam Thien'),
+(2, 'fff', 99888, 'KHamd');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -231,7 +262,14 @@ ALTER TABLE `product`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`);
+  ADD UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`),
+  ADD UNIQUE KEY `UNIQ_8D93D649D8308E5F` (`user_detail_id`);
+
+--
+-- Chỉ mục cho bảng `user_detail`
+--
+ALTER TABLE `user_detail`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT cho các bảng đã đổ
@@ -265,13 +303,19 @@ ALTER TABLE `order_detail`
 -- AUTO_INCREMENT cho bảng `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT cho bảng `user_detail`
+--
+ALTER TABLE `user_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -295,6 +339,12 @@ ALTER TABLE `order_detail`
 --
 ALTER TABLE `product`
   ADD CONSTRAINT `FK_D34A04AD12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+
+--
+-- Các ràng buộc cho bảng `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `FK_8D93D649D8308E5F` FOREIGN KEY (`user_detail_id`) REFERENCES `user_detail` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
