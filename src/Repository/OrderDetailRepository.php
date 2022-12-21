@@ -30,6 +30,15 @@ class OrderDetailRepository extends ServiceEntityRepository
         }
     }
 
+    public function add(OrderDetail $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     public function remove(OrderDetail $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
