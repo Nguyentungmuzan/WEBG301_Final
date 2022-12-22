@@ -16,7 +16,7 @@
                 <form action={{ path('add_cart',{ 'id': product.id }) }} method="get" class="mt-4 p-4 bg-light">
                     <div class="form-group">
                         <label for="quantity">Quantity</label>
-				        <input type="number" name="quantity" placeholder="Amount"/>
+				        <input type="number" name="quantity" min="1" placeholder="Amount"/>
                     </div>
 
                     <input type="submit" class="btn btn-warning" value="Add to Cart">
