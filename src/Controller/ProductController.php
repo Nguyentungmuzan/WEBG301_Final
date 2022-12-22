@@ -264,7 +264,7 @@ class ProductController extends AbstractController
 
             $entityManager->flush();
 
-
+            $this->addFlash('Info','Order successfully !');
             // Clean up/Empty the cart data (in session) after all.
             $session->remove('cart');
 
