@@ -72,24 +72,21 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('imgurl')->getData();
             $imgName = uniqid(); //uniqid : tạo ra string duy nhất
-            //B3: lấy ra đuôi (extension) của ảnh
-            //Yêu cầu cần thay đổi code của entity Product
+            
             $imgExtension = $file->guessExtension();
-            //B4: hoàn thiện tên mới cho ảnh (giữ đuôi cũ và thay tên mới)
+            
             $imageName = $imgName . "." . $imgExtension;
-            //VD: greenwich.jpg 
-            //B5: di chuyển ảnh về thư mục chỉ định trong project
+            
             try {
                 $file->move(
                     $this->getParameter('product_imgurl'),
                     $imageName
-                    //di chuyển file ảnh upload về thư mục cùng với tên mới
-                    //note: cầu hình parameter trong file services.yaml
+                    
                 );
             } catch (FileException $e) {
                 throwException($e);
             }
-            //B6: set dữ liệu của image vào object book
+            
             $product->setImgurl($imageName);
             //gọi đến Manager (Doctrine) để add object (row in table)
             $entityManager = $doctrine->getManager();
