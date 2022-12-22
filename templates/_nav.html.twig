@@ -16,9 +16,11 @@
                     {{ app.user ? 'Logout' : 'Login' }}
                 </a>
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
             <li class="nav-item">
             <a href="{{ path('crud_product_index') }}" class="nav-link">CRUD</a></li>
             </li>
+            {% endif %}
             {# <li class="nav-item">
             <a href="{{ path('user_detail_index') }}" class="nav-link">User</a></li>
             </li> #}
