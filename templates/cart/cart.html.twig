@@ -57,4 +57,8 @@
 						</div>
 					</section>
 				{% endif %}
+	{% if items | length == 0 %}
+		<h1>Your cart is empty!</h1>
+	{% endif %}			
+					
 			{% endblock %}

@@ -96,7 +96,7 @@ class ProductController extends AbstractController
             $entityManager->persist($product);
             $entityManager->flush();
 
-            $this->addFlash('Info', 'Add book successfully !');
+            $this->addFlash('Info', 'Add product successfully !');
             return $this->redirectToRoute('crud_product_index');
         }
 
@@ -135,7 +135,7 @@ class ProductController extends AbstractController
             $entityManager->persist($product);
             $entityManager->flush();
 
-            $this->addFlash('Info', 'Update book successfully !');
+            $this->addFlash('Info', 'Update product successfully !');
             return $this->redirectToRoute('crud_product_index');
         }
 
@@ -150,7 +150,7 @@ class ProductController extends AbstractController
         $entityManager = $doctrine->getManager();
         $entityManager->remove($product, true);
         $entityManager->flush();
-        $this->addFlash('Info', 'Delete book successfully !');
+        $this->addFlash('Info', 'Delete product successfully !');
 
         return $this->redirectToRoute(
             'crud_product_index'
