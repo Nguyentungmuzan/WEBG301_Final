@@ -187,6 +187,7 @@ class ProductController extends AbstractController
         $session = $request->getSession();
         $cart = $session->get('cart', []);
         $cartWithData = [];
+        $totalQuantity = 0;
         foreach ($cart as $id => $quantity) {
             $cartWithData[] = [
                 'product' => $productRepository->find($id),
@@ -196,11 +197,16 @@ class ProductController extends AbstractController
         foreach ($cartWithData as $item) {
             $totalItem = $item['product']->getPrice() * $item['quantity'];
             $total += $totalItem;
+            $count = count($cart);
+            $totalQuantity += $item['quantity'];
         }
         return $this->render('cart/cart.html.twig', [
             'items' => $cartWithData,
-            'total' => $total
+            'total' => $total,
+            'count' => $count,
+            'quantityall' => $totalQuantity 
         ]);
+
     }
 
     /**
@@ -271,5 +277,22 @@ class ProductController extends AbstractController
         } catch (Exception $e) {
             throw $e;
         }
+    }
+    /**
+     * @Route("/viewOrder", name="view_order", methods={"GET"})
+     */
+    // public function viewOrder(EntityManagerInterface $em): Response
+    // {
+    //     $order = $em->getRepository(Order::class)->findAll();
+    //     return $this->render('/myorder.html.twig', [
+    //         'list' => $order,
+    //     ]);
+    // }
+
+    public function viewOrder(Request $request, OrderRepository $orderRepository){
+        $order = $orderRepository->findAll();
+        return $this->render('/myorder.html.twig', [
+            'list' => $order,
+        ]);
     }
 }
