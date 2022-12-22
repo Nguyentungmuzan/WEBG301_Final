@@ -13,6 +13,7 @@
                 <h2>{{ product.price }} $</h2>
                 <hr>
                 <p><b>Description: </b>{{ product.description }} </p>
+                {% if is_granted('ROLE_CUSTOMER') %}
                 <form action={{ path('add_cart',{ 'id': product.id }) }} method="get" class="mt-4 p-4 bg-light">
                     <div class="form-group">
                         <label for="quantity">Quantity</label>
@@ -21,6 +22,7 @@
 
                     <input type="submit" class="btn btn-warning" value="Add to Cart">
                 </form>
+                {% endif %}
                 <a href="{{ path('product_index') }}" class="btn btn-warning">Back to list</a>
             
             
