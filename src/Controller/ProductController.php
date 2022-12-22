@@ -28,13 +28,14 @@ class ProductController extends AbstractController
     #[Route('/', name: 'product_index')]
     public function viewtestw(ProductRepository $productRepository, Request $request)
     {
-        $searchValue = $request->get('searchValue') ? $request->get('searchValue') :'';
+        $searchValue = $request->get('searchValue') ? $request->get('searchValue') : '';
         $products = $productRepository->searchProducts($searchValue);
-        return $this->render('product/index.html.twig', 
-        [
-            'products' => $products
-        ]
-    );
+        return $this->render(
+            'product/index.html.twig',
+            [
+                'products' => $products
+            ]
+        );
     }
 
     #[Route('/detail/{id}', name: 'product_show')]
@@ -218,7 +219,7 @@ class ProductController extends AbstractController
         $session = $request->getSession();
 
         $cart = $session->get('cart');
-       
+
         unset($cart[$id]);
         $session->set('cart', $cart);
 
@@ -228,61 +229,56 @@ class ProductController extends AbstractController
     }
 
     /**
-    * @Route("/checkoutCart", name="checkout_cart", methods={"GET"})
-    */
-    public function checkoutCart(Request $request, OrderDetailRepository $orderDetailRepository,
-    OrderRepository $orderRepository, ProductRepository $productRepository,
-    ManagerRegistry $mr): Response
-    {
-    $entityManager = $mr->getManager();
-    $session = $request->getSession(); //get a session
-    // check if session has elements in cart
-    if ($session->has('cart') && !empty($session->get('cart'))) {
-    try {
-    // start transaction!
-    $entityManager->getConnection()->beginTransaction();
-    $cartElements = $session->get('cart');
+     * @Route("/checkoutCart", name="checkout_cart", methods={"GET"})
+     */
+    public function checkoutCart(
+        Request $request,
+        ProductRepository $productRepository,
+        ManagerRegistry $mr
+    ): Response {
+        $entityManager = $mr->getManager();
 
-    //Create new Order and fill info for it. (Skip Total temporarily for now)
-    $order = new Order();
-    date_default_timezone_set('Asia/Ho_Chi_Minh');
-    $order->setPurchaseDate(new \DateTime());
-    /** @var \App\Entity\User $user */
-    $user = $this->getUser();
-    $order->setUser($user);
-    $orderRepository->add($order, true); //flush here first to have ID in Order in DB.
+        $session = $request->getSession(); //get a session
+        // check if session has elements in cart
+        if (!$session->has('cart') && empty($session->get('cart'))) {
+            return new Response("Shopping Cart has no product, please add some!");
+        }
 
-    //Create all Order Details for the above Order
-    $total = 0;
-    foreach ($cartElements as $product_id => $quantity) {
-    $product = $productRepository->find($product_id);
-    //create each Order Detail
-    $orderDetail = new OrderDetail();
-    $orderDetail->setOrders($order);
-    $orderDetail->setProduct($product);
-    $orderDetail->setQuantity($quantity);
-    $orderDetailRepository->add($orderDetail);
+        try {
+            $order = new Order();
+            $order->setPurchaseDate(new \DateTime());
+            /** @var \App\Entity\User $user */
+            $user = $this->getUser();
 
-    $total += $product->getPrice() * $quantity;
+            $order->setUser($user);
+
+            $cartItems = $session->get('cart');
+            $total = 0;
+
+            foreach ($cartItems as $productId => $quantity) {
+                $product = $productRepository->find($productId);
+
+                $total += $product->getPrice() * $quantity;
+
+                $oderDetail = new OrderDetail();
+                $oderDetail->setProduct($product);
+                $oderDetail->setQuantity($quantity);
+                $entityManager->persist($oderDetail);
+
+                $order->addOrderDetail($oderDetail);
+            }
+            $order->setTotal($total);
+            $entityManager->persist($order);
+
+            $entityManager->flush();
+
+
+            // Clean up/Empty the cart data (in session) after all.
+            $session->remove('cart');
+
+            return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
-    $order->setTotal($total);
-    $orderRepository->add($order);
-    // flush all new changes (all order details and update order's total) to DB
-    $entityManager->flush();
-
-    // Commit all changes if all changes are OK
-    $entityManager->getConnection()->commit();
-
-    // Clean up/Empty the cart data (in session) after all.
-    $session->remove('cartElements');
-    } catch (Exception $e) {
-    // If any change above got trouble, we roll back (undo) all changes made above!
-    $entityManager->getConnection()->rollBack();
-    }
-    return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
-    } else
-    return new Response("Shopping Cart has no product, please add some!");
-    }
-
 }
-
