@@ -46,8 +46,18 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        //NOTE: Hệ thống có 2 role: ADMIN & CUSTOMER
+        //gọi đến user hiện tại (logged-in user)
+        $user = $token->getUser();
+        //check role của user để redirect về web page chỉ định
+    
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('crud_product_index'));
+        } else {
+       
         return new RedirectResponse($this->urlGenerator->generate('product_index'));
-        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        }
+        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl(Request $request): string

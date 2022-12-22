@@ -1,7 +1,7 @@
 
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom   navbar navbar-light" style="background-color: #e3f2fd">
         <a href="{{ path('app_index') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-            <span class="fs-4">WEBG301 Team Van xinh xinh</span>
+            <span class="fs-4">WEBG301 Shopping Cart</span>
         </a>
         
         <ul class="nav nav-pills">
@@ -16,9 +16,14 @@
                     {{ app.user ? 'Logout' : 'Login' }}
                 </a>
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
             <li class="nav-item">
-            <a href="{{ path('crud_product_index') }}" class="nav-link">crud</a></li>
+            <a href="{{ path('crud_product_index') }}" class="nav-link">CRUD</a></li>
             </li>
+            {% endif %}
+            {# <li class="nav-item">
+            <a href="{{ path('user_detail_index') }}" class="nav-link">User</a></li>
+            </li> #}
             <li class="nav-item">
                 <form class="form-inline my-2 my-lg-0" action={{ path('product_index') }} method="post">
 			          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchValue">

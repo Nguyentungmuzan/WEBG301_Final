@@ -70,10 +70,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //bổ sung code upload ảnh
-            //B1: lấy ra ảnh vừa upload
             $file = $form->get('imgurl')->getData();
-            //B2: set tên mới cho ảnh => đảm bảo tên ảnh là duy nhất trong thư mục
             $imgName = uniqid(); //uniqid : tạo ra string duy nhất
             //B3: lấy ra đuôi (extension) của ảnh
             //Yêu cầu cần thay đổi code của entity Product
@@ -117,8 +114,6 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             //kiểm tra xem người dùng có muốn upload ảnh mới hay không
-            //nếu có thì thực hiện code upload ảnh
-            //nếu không thì bỏ qua
             $imageFile = $form['imgurl']->getData();
             if ($imageFile != null) {
                 $file = $form->get('imgurl')->getData();
