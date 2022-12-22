@@ -30,11 +30,13 @@
 					<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 				</div>
-				<input class="btn btn-success w-100 mt-4" type="submit" value="SIGN IN">
+				<button class="btn btn-success w-100 mt-4" type="submit">
+					Sign in
+				</button>
 			</form>
-            <p class="mt-1">Do not have an account?</p>
-            <a class ="mt-1" href="{{path('app_register')}}">Register now</a>
-            
+			<p class="mt-1">Do not have an account?</p>
+			<a class="mt-1" href="{{path('app_register')}}">Register now</a>
+
 		</div>
 	</form>
 {% endblock %}
