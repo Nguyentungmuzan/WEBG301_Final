@@ -219,7 +219,6 @@ class ProductController extends AbstractController
             'view_cart'
         );
     }
-
     /**
      * @Route("/checkoutCart", name="checkout_cart", methods={"GET"})
      */
