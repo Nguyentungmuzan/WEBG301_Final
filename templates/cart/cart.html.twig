@@ -63,7 +63,9 @@
 
 						<div class="d-flex justify-content-end">
 							<a href="{{ path('product_index') }}" class="btn btn-light">Continue shopping</a>
+							{% if is_granted('ROLE_CUSTOMER') %}
 							<a href="{{ path('checkout_cart') }}" class="btn btn-primary">Add to cart</a>
+							{% endif %}
 						</div>
 					</section>
 				{% endif %}
