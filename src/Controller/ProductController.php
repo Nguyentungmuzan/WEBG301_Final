@@ -184,6 +184,7 @@ class ProductController extends AbstractController
     public function viewCart(Request $request, ProductRepository $productRepository)
     {
         $total = 0;
+        $count = 0;
         $session = $request->getSession();
         $cart = $session->get('cart', []);
         $cartWithData = [];
