@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 20, 2022 lúc 03:22 AM
--- Phiên bản máy phục vụ: 10.4.24-MariaDB
--- Phiên bản PHP: 8.1.6
+-- Thời gian đã tạo: Th12 23, 2022 lúc 10:07 AM
+-- Phiên bản máy phục vụ: 10.4.25-MariaDB
+-- Phiên bản PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -101,6 +101,14 @@ CREATE TABLE `order` (
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `order`
+--
+
+INSERT INTO `order` (`id`, `total`, `purchase_date`, `user_id`) VALUES
+(1, 16300, '2022-12-22', NULL),
+(2, 2916, '2022-12-22', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -113,6 +121,15 @@ CREATE TABLE `order_detail` (
   `orders_id` int(11) DEFAULT NULL,
   `product_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order_detail`
+--
+
+INSERT INTO `order_detail` (`id`, `quantity`, `orders_id`, `product_id`) VALUES
+(1, 25, 1, 35),
+(2, 1, 2, 53),
+(3, 1, 2, 44);
 
 -- --------------------------------------------------------
 
@@ -187,8 +204,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `user_detail_id`) VALUES
-(1, 'van@gmail.com', '[]', '$2y$13$CXQs6uppH/D.7W18N8GBAOmrNDcJOR/oCr8BPS6ZwcQaLJQL5MAW2', 1),
-(2, 'v@gmail.com', '[]', '$2y$13$vOx1ASxxq5MVmQT/8mPA0OGfSI/WbtMbi6LBLFG3Y/.3KoTUk5vNW', 2);
+(1, 'van@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$CXQs6uppH/D.7W18N8GBAOmrNDcJOR/oCr8BPS6ZwcQaLJQL5MAW2', 1),
+(2, 'v@gmail.com', '[]', '$2y$13$vOx1ASxxq5MVmQT/8mPA0OGfSI/WbtMbi6LBLFG3Y/.3KoTUk5vNW', 2),
+(4, 'nduylamtung2106@gmail.com', '[\"ROLE_CUSTOMER\"]', '$2y$13$zohdWLAnh6C8DkydJwe4NuS7bGfA8uZcYXB8q0DShJoKO4mWG0Xki', 4);
 
 -- --------------------------------------------------------
 
@@ -209,7 +227,9 @@ CREATE TABLE `user_detail` (
 
 INSERT INTO `user_detail` (`id`, `name`, `phone`, `address`) VALUES
 (1, 'vanxinh', 987678999, 'KHam Thien'),
-(2, 'fff', 99888, 'KHamd');
+(2, 'fff', 99888, 'KHamd'),
+(3, 'Nguyễn Duy Lâm Tùng', 948760836, 'Số 44  ngách 133/13 Tập thể Công Trường 57, phường Phúc Xá, quận Ba Đình, Thành phố Hà Nội'),
+(4, 'Nguyễn Duy Lâm Tùng', 948760836, 'Số 44  ngách 133/13 Tập thể Công Trường 57, phường Phúc Xá, quận Ba Đình, Thành phố Hà Nội');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -292,31 +312,31 @@ ALTER TABLE `messenger_messages`
 -- AUTO_INCREMENT cho bảng `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `user_detail`
 --
 ALTER TABLE `user_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
