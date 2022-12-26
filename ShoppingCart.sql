@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 23, 2022 lúc 10:07 AM
+-- Thời gian đã tạo: Th12 25, 2022 lúc 03:48 PM
 -- Phiên bản máy phục vụ: 10.4.25-MariaDB
 -- Phiên bản PHP: 8.1.10
 
@@ -107,7 +107,9 @@ CREATE TABLE `order` (
 
 INSERT INTO `order` (`id`, `total`, `purchase_date`, `user_id`) VALUES
 (1, 16300, '2022-12-22', NULL),
-(2, 2916, '2022-12-22', NULL);
+(2, 2916, '2022-12-22', NULL),
+(3, 8480, '2022-12-24', 4),
+(9, 1304, '2022-12-25', 2);
 
 -- --------------------------------------------------------
 
@@ -127,9 +129,12 @@ CREATE TABLE `order_detail` (
 --
 
 INSERT INTO `order_detail` (`id`, `quantity`, `orders_id`, `product_id`) VALUES
-(1, 25, 1, 35),
 (2, 1, 2, 53),
-(3, 1, 2, 44);
+(3, 1, 2, 44),
+(4, 3, 3, 37),
+(5, 4, 3, 34),
+(6, 2, 3, 36),
+(12, 2, 9, 35);
 
 -- --------------------------------------------------------
 
@@ -205,7 +210,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `user_detail_id`) VALUES
 (1, 'van@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$CXQs6uppH/D.7W18N8GBAOmrNDcJOR/oCr8BPS6ZwcQaLJQL5MAW2', 1),
-(2, 'v@gmail.com', '[]', '$2y$13$vOx1ASxxq5MVmQT/8mPA0OGfSI/WbtMbi6LBLFG3Y/.3KoTUk5vNW', 2),
+(2, 'v@gmail.com', '[\"ROLE_CUSTOMER\"]', '$2y$13$vOx1ASxxq5MVmQT/8mPA0OGfSI/WbtMbi6LBLFG3Y/.3KoTUk5vNW', 2),
 (4, 'nduylamtung2106@gmail.com', '[\"ROLE_CUSTOMER\"]', '$2y$13$zohdWLAnh6C8DkydJwe4NuS7bGfA8uZcYXB8q0DShJoKO4mWG0Xki', 4);
 
 -- --------------------------------------------------------
@@ -312,13 +317,13 @@ ALTER TABLE `messenger_messages`
 -- AUTO_INCREMENT cho bảng `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `product`

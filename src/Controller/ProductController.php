@@ -253,6 +253,8 @@ class ProductController extends AbstractController
             $cartItems = $session->get('cart');
             $total = 0;
 
+                //Variable naming
+
             foreach ($cartItems as $productId => $quantity) {
                 $product = $productRepository->find($productId);
 
