@@ -127,7 +127,7 @@ class ProductController extends AbstractController
                 }
                 $product->setImgurl($imageName);
             }
-            //gọi đến Manager (Doctrine) để add object (row in table)
+            //gọi đến Manager (Doctrine) để create object (row in table)
             $entityManager = $doctrine->getManager();
             $entityManager->persist($product);
             $entityManager->flush();
